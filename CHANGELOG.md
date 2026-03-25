@@ -15,6 +15,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 - Mountable engine — users now mount via `mount SdocLive::Engine, at: "/doc"` in routes
 - Engine serves documentation using `Rack::Static` with `index.html` support
+- Trailing slash redirect middleware so `/doc` redirects to `/doc/`
+
+### Changed
+
+- Default output directory changed from `public/doc` to `tmp/doc` to avoid conflicts with Rails static file serving
 
 ### Removed
 

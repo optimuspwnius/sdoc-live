@@ -10,7 +10,7 @@ module SdocLive
 
       config = SdocLive.configuration
 
-      @output_dir = config.output_dir || @root.join("public", "doc")
+      @output_dir = config.output_dir || @root.join("tmp", "doc")
       @title      = config.title
       @main_file  = config.main_file
 

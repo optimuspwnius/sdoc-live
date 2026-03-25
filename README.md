@@ -1,6 +1,6 @@
 # SDoc Live
 
-Live SDoc generation for Rails — watches your source files and auto-regenerates API documentation on changes. Serves docs from `public/doc/` so they're available at `/doc/index.html` in development.
+Live SDoc generation for Rails — watches your source files and auto-regenerates API documentation on changes. Serves docs via a mountable engine at a path you choose (e.g. `/doc`).
 
 ## Requirements
 
@@ -72,8 +72,8 @@ SdocLive.configure do |config|
   # Regex for file types that trigger regeneration (default: /\.rb$/)
   # config.watch_file_type_regex = /\.(rb|md)$/
 
-  # Override the output directory (default: Rails.root.join("public", "doc"))
-  # config.output_dir = Rails.root.join("public", "doc")
+  # Override the output directory (default: Rails.root.join("tmp", "doc"))
+  # config.output_dir = Rails.root.join("tmp", "doc")
 
   # Additional RDoc options passed to the SDoc generator
   # config.rdoc_options = ["--all", "--hyperlink-all"]
@@ -84,8 +84,8 @@ end if defined?(SdocLive)
 
 1. **Development**: Puma boots → forks a child process that runs `SdocLive::Generator#build_watch`
 2. The `listen` gem monitors `app/` and `lib/` for `.rb` file changes
-3. On change, SDoc regenerates documentation into `public/doc/`
-4. Docs are immediately available at `/doc/index.html`
+3. On change, SDoc regenerates documentation into `tmp/doc/`
+4. Docs are served by the mounted engine (e.g. at `/doc`)
 5. Clean subprocess management with bidirectional lifecycle monitoring (Puma ↔ SDoc)
 
 ## License
