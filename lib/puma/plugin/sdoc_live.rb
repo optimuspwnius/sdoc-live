@@ -1,8 +1,5 @@
 require "puma/plugin"
 
-class SdocLive
-end
-
 Puma::Plugin.create do
 
   attr_reader :puma_pid, :sdoc_pid, :log_writer
