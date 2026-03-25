@@ -11,6 +11,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 - Removed `class SdocLive` stub from Puma plugin that clashed with the `module SdocLive` definition
 - Replaced deprecated `on_booted`/`on_stopped` Puma event hooks with `after_booted`/`after_stopped`
 
+### Added
+
+- Mountable engine — users now mount via `mount SdocLive::Engine, at: "/doc"` in routes
+- Engine serves documentation using `Rack::Static` with `index.html` support
+
+### Removed
+
+- Removed `mount_path` config option (mount point is now controlled via `routes.rb`)
+- Removed auto-mounting initializer (replaced by explicit engine mount)
+
 ## [0.1.3] - 2026-03-25
 
 ### Changed

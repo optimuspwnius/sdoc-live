@@ -26,7 +26,15 @@ Then run `bundle install`.
 
 ## Usage
 
-### 1. Puma Plugin (Development Watch Mode)
+### 1. Mount the Engine
+
+Add to your `config/routes.rb`:
+
+```ruby
+mount SdocLive::Engine, at: "/doc"
+```
+
+### 2. Puma Plugin (Development Watch Mode)
 
 Add to your `config/puma.rb`:
 
@@ -38,9 +46,7 @@ end
 
 This watches `app/` and `lib/` for `.rb` file changes and automatically regenerates SDoc documentation.
 
-Docs are served at `/doc/index.html` via Rails' `public/` directory.
-
-### 2. Rake Task (Manual / Deploy)
+### 3. Rake Task (Manual / Deploy)
 
 ```bash
 rake sdoc:build
