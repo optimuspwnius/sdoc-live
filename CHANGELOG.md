@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ### Fixed
 
 - Removed `class SdocLive` stub from Puma plugin that clashed with the `module SdocLive` definition
+- Replaced deprecated `on_booted`/`on_stopped` Puma event hooks with `after_booted`/`after_stopped`
 
 ## [0.1.3] - 2026-03-25
 
