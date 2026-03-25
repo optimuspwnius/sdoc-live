@@ -4,28 +4,64 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.1.11] - 2026-03-25
 
 ### Fixed
 
-- Removed `class SdocLive` stub from Puma plugin that clashed with the `module SdocLive` definition
-- Replaced deprecated `on_booted`/`on_stopped` Puma event hooks with `after_booted`/`after_stopped`
 - Middleware inserted before `Rails::Rack::Logger` to suppress doc request log spam
+
+## [0.1.10] - 2026-03-25
+
+### Fixed
+
+- Fixed `undefined method 'middleware'` error by using `Rails.application.middleware` instead of `app.middleware`
+
+## [0.1.9] - 2026-03-25
+
+### Changed
+
+- Replaced engine mount + route introspection with `SdocLive::StaticFiles` Rack middleware
+- Configurable `mount_path` option (default: `"/doc"`) — no engine mount in routes needed
+
+### Removed
+
+- Removed need for `mount SdocLive::Engine, at: "/doc"` in routes
+
+## [0.1.8] - 2026-03-25
+
+### Fixed
+
+- Attempted fix for trailing slash redirect using app-level Rack middleware
+
+## [0.1.7] - 2026-03-25
+
+### Fixed
+
+- Fixed test for default output directory (`public/doc` → `tmp/doc`)
+
+## [0.1.6] - 2026-03-25
 
 ### Added
 
-- `SdocLive::StaticFiles` Rack middleware serves docs with proper MIME types and `index.html` support
-- Configurable `mount_path` option (default: `\"/doc\"`) — no engine mount in routes needed
+- Mountable engine — `mount SdocLive::Engine, at: "/doc"` in routes
+- Engine serves documentation using `Rack::Static` with `index.html` support
 - Trailing slash redirect — `/doc` automatically redirects to `/doc/`
 
 ### Changed
 
 - Default output directory changed from `public/doc` to `tmp/doc` to avoid conflicts with Rails static file serving
 
-### Removed
+## [0.1.5] - 2026-03-25
 
-- Removed `mount_path` config option (mount point is now controlled via `routes.rb`)
-- Removed auto-mounting initializer (replaced by explicit engine mount)
+### Fixed
+
+- Replaced deprecated `on_booted`/`on_stopped` Puma event hooks with `after_booted`/`after_stopped`
+
+## [0.1.4] - 2026-03-25
+
+### Fixed
+
+- Removed `class SdocLive` stub from Puma plugin that clashed with the `module SdocLive` definition
 
 ## [0.1.3] - 2026-03-25
 
