@@ -71,7 +71,7 @@ SdocLive.configure do |config|
 
   # Additional RDoc options passed to the SDoc generator
   # config.rdoc_options = ["--all", "--hyperlink-all"]
-end
+end if defined?(SdocLive)
 ```
 
 ## How It Works
