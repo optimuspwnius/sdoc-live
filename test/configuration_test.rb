@@ -102,4 +102,17 @@ class ConfigurationTest < Minitest::Test
     assert_equal "GUIDE.md", SdocLive.configuration.main_file
   end
 
+  def test_default_cache_control
+    config = SdocLive.configuration
+    assert_equal "no-cache", config.cache_control
+  end
+
+  def test_configure_cache_control
+    SdocLive.configure do |config|
+      config.cache_control = "public, max-age=3600"
+    end
+
+    assert_equal "public, max-age=3600", SdocLive.configuration.cache_control
+  end
+
 end

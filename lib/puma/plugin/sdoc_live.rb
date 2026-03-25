@@ -1,9 +1,21 @@
 require "puma/plugin"
 
+# Puma plugin that runs SDoc Live in a forked child process during development.
+#
+# Activated by adding <tt>plugin :sdoc_live</tt> to +config/puma.rb+.
+#
+# After Puma boots, it forks a child that calls
+# +SdocLive::Generator#build_watch+ (initial build + file watching).
+# Bidirectional lifecycle monitoring ensures both processes stay in sync:
+#
+# - If Puma dies, the SDoc child exits.
+# - If the SDoc child dies, Puma is stopped.
 Puma::Plugin.create do
 
   attr_reader :puma_pid, :sdoc_pid, :log_writer
 
+  # Called by Puma during plugin registration. Sets up the forked SDoc
+  # process after boot and registers a shutdown hook.
   def start(launcher)
     @log_writer = launcher.log_writer
     @puma_pid = $PROCESS_ID
@@ -42,6 +54,7 @@ Puma::Plugin.create do
 
   private
 
+  # Sends INT to the SDoc child process and waits for it to exit.
   def stop_sdoc
     Process.waitpid(sdoc_pid, Process::WNOHANG)
     log "Stopping SdocLive..."
@@ -50,14 +63,18 @@ Puma::Plugin.create do
   rescue Errno::ECHILD, Errno::ESRCH
   end
 
+  # Monitors the Puma parent process from the SDoc child.
   def monitor_puma
     monitor(:puma_dead?, "Detected Puma has gone away, stopping SdocLive...")
   end
 
+  # Monitors the SDoc child process from the Puma parent.
   def monitor_sdoc
     monitor(:sdoc_dead?, "Detected SdocLive has gone away, stopping Puma...")
   end
 
+  # Polls +process_dead+ every 2 seconds. When the monitored process is
+  # detected as dead, logs the message and sends INT to the current process.
   def monitor(process_dead, message)
     loop do
 
@@ -71,6 +88,7 @@ Puma::Plugin.create do
     end
   end
 
+  # Returns +true+ if the SDoc child process has exited.
   def sdoc_dead?
     Process.waitpid(sdoc_pid, Process::WNOHANG)
     false
@@ -78,6 +96,7 @@ Puma::Plugin.create do
     true
   end
 
+  # Returns +true+ if the Puma parent process has been replaced (i.e. died).
   def puma_dead?
     Process.ppid != puma_pid
   end

@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Configurable `cache_control` option (default: `"no-cache"`) to control browser caching of served documentation
+- RDoc documentation comments for all classes and public methods across `SdocLive`, `Engine`, `StaticFiles`, `Generator`, and the Puma plugin
+
+### Changed
+
+- Default cache-control changed from `public, max-age=3600` to `no-cache` to prevent stale docs when switching between apps
+- Expanded README with Quick Start guide, configuration options table, architecture diagram, and detailed explanations of all features
+
+## [0.1.13] - 2026-03-25
+
+### Changed
+
+- Reverted to custom `StaticFiles` middleware using `ActionDispatch::FileHandler` scoped to mount path for correct path-prefix handling
+
+## [0.1.12] - 2026-03-25
+
+### Changed
+
+- Replaced custom `StaticFiles` middleware with `ActionDispatch::Static`
+
 ## [0.1.11] - 2026-03-25
 
 ### Fixed

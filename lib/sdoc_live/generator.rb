@@ -2,8 +2,16 @@ require "fileutils"
 
 module SdocLive
 
+  # Generates SDoc documentation from Ruby source files. Wraps +RDoc::RDoc+
+  # with SDoc formatting and supports both one-shot builds and continuous
+  # watch-mode regeneration.
   class Generator
 
+    # Creates a new generator.
+    #
+    # [root] Project root directory. Defaults to +Rails.root+ when available,
+    #        otherwise +Dir.pwd+. All configured paths are resolved relative
+    #        to this root.
     def initialize(root: nil)
       @root = root || defined?(Rails) && Rails.root || Pathname.new(Dir.pwd)
       @root = Pathname.new(@root) unless @root.is_a?(Pathname)
@@ -25,6 +33,9 @@ module SdocLive
       @rdoc_options          = config.rdoc_options
     end
 
+    # Runs a full SDoc generation pass into the configured output directory.
+    # Uses <tt>--force-output</tt> to overwrite any existing docs. Prints
+    # elapsed time on completion.
     def build
       start_time = Time.now
 
@@ -57,6 +68,11 @@ module SdocLive
       puts "[SdocLive] Generated in #{ format('%.2f', elapsed) }s → #{ @output_dir }"
     end
 
+    # Builds documentation once, then watches +watch_dirs+ for file changes
+    # matching +watch_file_type_regex+ and rebuilds on each change. Blocks
+    # the current thread until interrupted.
+    #
+    # This is the method called by the Puma plugin in a forked child process.
     def build_watch
       require "listen"
 
