@@ -13,12 +13,41 @@ module SdocLive
 
       Rails.application.middleware.insert_before(
         Rails::Rack::Logger,
-        ActionDispatch::Static,
+        SdocLive::StaticFiles,
         doc_root,
-        headers: { "cache-control" => "public, max-age=3600" },
-        index: "index.html",
-        urls: [mount_path]
+        mount_path
       )
+    end
+
+  end
+
+  class StaticFiles
+
+    def initialize(app, doc_root, mount_path)
+      @app = app
+      @mount_path = mount_path.chomp("/")
+      @file_handler = ActionDispatch::FileHandler.new(
+        doc_root,
+        headers: { "cache-control" => "public, max-age=3600" }
+      )
+    end
+
+    def call(env)
+      path_info = env["PATH_INFO"]
+
+      if path_info == @mount_path
+        query = env["QUERY_STRING"].to_s.empty? ? "" : "?#{env['QUERY_STRING']}"
+        return [301, { "location" => "#{@mount_path}/#{query}" }, []]
+      end
+
+      if path_info.start_with?("#{@mount_path}/")
+        env["PATH_INFO"] = path_info.delete_prefix(@mount_path)
+        response = @file_handler.attempt(env)
+        env["PATH_INFO"] = path_info
+        return response if response
+      end
+
+      @app.call(env)
     end
 
   end
