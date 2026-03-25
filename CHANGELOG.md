@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.1.3] - 2026-03-25
+
+### Changed
+
+- Renamed Puma plugin from `:sdoc` to `:sdoc_live`
+
+## [0.1.2] - 2026-03-25
+
+### Changed
+
+- Updated README configuration example to guard with `if defined?(SdocLive)`
+
+## [0.1.1] - 2026-03-25
+
+### Added
+
+- Note in README about needing the sdoc fork for Ruby 4.0+ ([rails/sdoc#379](https://github.com/rails/sdoc/pull/379))
+
 ## [0.1.0] - 2026-03-25
 
 ### Added
