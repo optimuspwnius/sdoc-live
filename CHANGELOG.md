@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 - Removed `class SdocLive` stub from Puma plugin that clashed with the `module SdocLive` definition
 - Replaced deprecated `on_booted`/`on_stopped` Puma event hooks with `after_booted`/`after_stopped`
+- Middleware inserted before `Rails::Rack::Logger` to suppress doc request log spam
 
 ### Added
 

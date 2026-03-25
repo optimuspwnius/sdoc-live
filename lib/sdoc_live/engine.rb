@@ -11,7 +11,7 @@ module SdocLive
       doc_root = (config.output_dir || Rails.root.join("tmp", "doc")).to_s
       mount_path = config.mount_path
 
-      app.middleware.use(SdocLive::StaticFiles, doc_root, mount_path)
+      Rails.application.middleware.insert_before(Rails::Rack::Logger, SdocLive::StaticFiles, doc_root, mount_path)
     end
 
   end
