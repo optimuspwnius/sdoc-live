@@ -16,6 +16,14 @@ gem "sdoc_live"
 
 Then run `bundle install`.
 
+> **Note:** If you're using Ruby 4.0+, you'll need to add the following to your Gemfile until a new version of sdoc is released with the fix ([rails/sdoc#379](https://github.com/rails/sdoc/pull/379)):
+>
+> ```ruby
+> group :development do
+>   gem "sdoc", github: "zzak/sdoc", branch: "re-379"
+> end
+> ```
+
 ## Usage
 
 ### 1. Puma Plugin (Development Watch Mode)
