@@ -32,7 +32,7 @@ Add to your `config/puma.rb`:
 
 ```ruby
 if ENV.fetch("RAILS_ENV", "development") == "development"
-  plugin :sdoc
+  plugin :sdoc_live
 end
 ```
 

@@ -1,6 +1,6 @@
 require "puma/plugin"
 
-class Sdoc
+class SdocLive
 end
 
 Puma::Plugin.create do
