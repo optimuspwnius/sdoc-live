@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 - Mountable engine — users now mount via `mount SdocLive::Engine, at: "/doc"` in routes
 - Engine serves documentation using `Rack::Static` with `index.html` support
-- Trailing slash redirect middleware so `/doc` redirects to `/doc/`
+- Trailing slash redirect middleware — automatically detects the engine mount path and redirects (e.g. `/doc` → `/doc/`)
 
 ### Changed
 

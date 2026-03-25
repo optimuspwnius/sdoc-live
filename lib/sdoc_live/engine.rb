@@ -21,20 +21,30 @@ module SdocLive
       end
     end
 
-    initializer "sdoc_live.trailing_slash" do
-      SdocLive::Engine.middleware.use(Class.new do
-        def initialize(app)
-          @app = app
-        end
+    initializer "sdoc_live.trailing_slash", after: :add_routing_paths do |app|
+      mount_path = nil
 
-        def call(env)
-          if env["PATH_INFO"] == ""
-            [301, { "location" => "#{ env['SCRIPT_NAME'] }/", "content-type" => "text/html" }, ["Redirecting..."]]
-          else
-            @app.call(env)
-          end
+      app.routes.routes.each do |route|
+        if route.app.respond_to?(:app) && route.app.app == SdocLive::Engine
+          mount_path = route.path.spec.to_s.gsub("(.:format)", "").chomp("/")
+          break
         end
-      end)
+      end
+
+      if mount_path && !mount_path.empty?
+        app.middleware.use(Class.new do
+          define_method(:initialize) { |a| @app = a }
+
+          define_method(:call) do |env|
+            if env["PATH_INFO"] == mount_path && !env["PATH_INFO"].end_with?("/")
+              query = env["QUERY_STRING"].to_s.empty? ? "" : "?#{ env['QUERY_STRING'] }"
+              [301, { "location" => "#{ mount_path }/#{ query }", "content-type" => "text/html" }, ["Redirecting..."]]
+            else
+              @app.call(env)
+            end
+          end
+        end)
+      end
     end
 
   end
