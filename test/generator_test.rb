@@ -149,7 +149,7 @@ class GeneratorTest < Minitest::Test
     generator = SdocLive::Generator.new(root: @tmpdir)
     output_dir = generator.instance_variable_get(:@output_dir)
 
-    assert_equal Pathname.new(@tmpdir).join("public", "doc"), output_dir
+    assert_equal Pathname.new(@tmpdir).join("tmp", "doc"), output_dir
   end
 
   def test_default_source_dirs
