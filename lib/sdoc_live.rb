@@ -19,13 +19,14 @@ module SdocLive
   class Configuration
 
     attr_accessor :output_dir, :title, :main_file, :source_dirs, :watch_dirs,
-                  :watch_file_type_regex, :rdoc_options
+                  :watch_file_type_regex, :rdoc_options, :mount_path
 
     def initialize
       @source_dirs = ["app", "lib"]
       @watch_file_type_regex = /\.rb$/
       @title = "Documentation"
       @main_file = "README.md"
+      @mount_path = "/doc"
     end
 
   end
